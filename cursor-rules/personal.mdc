@@ -1,0 +1,9 @@
+---
+description: My personal coding preferences
+globs: 
+alwaysApply: true
+---
+
+# Your rules here
+- Prefer concise explanations
+- When asking for git commit messages keep them concise
