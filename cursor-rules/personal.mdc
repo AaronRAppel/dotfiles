@@ -4,6 +4,8 @@ globs:
 alwaysApply: true
 ---
 
-# Your rules here
+# General rules
 - Prefer concise explanations
 - When asking for git commit messages keep them concise
+- Do not commit changes without asking me first
+- Prefer simple/short solutions over verbose solutions
