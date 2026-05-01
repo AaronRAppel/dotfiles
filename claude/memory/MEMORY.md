@@ -12,6 +12,8 @@
 - Settings: ~/.claude/settings.json
 - Custom notification script: ~/.claude/scripts/notify.sh
   - See [hooks.md](hooks.md) for details
+- Config symlinked from ~/.claude into ~/workspace/dotfiles (GitHub: AaronRAppel/dotfiles)
+  - See [dotfiles_sync.md](dotfiles_sync.md) for sync reminder
 
 ## User Preferences
 - Prefers plan mode by default
