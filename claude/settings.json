@@ -1,0 +1,157 @@
+{
+  "env": {
+    "ANTHROPIC_MODEL": "claude-opus-4-6",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6",
+    "GUSTO_CLAUDE_SETUP": "true",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5-20251001"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(echo *)",
+      "Bash(jq *)",
+      "Bash(bats *)",
+      "Bash(grep *)",
+      "Bash(mkdir *)",
+      "Bash(git *)",
+      "Bash(jj *)",
+      "Bash(ruby -c *)",
+      "Bash(bin/srb *)",
+      "Bash(bin/rubocop *)",
+      "Bash(bin/rspec *)",
+      "Bash(cargo build *)",
+      "Bash(cargo test *)",
+      "Bash(cargo check *)",
+      "Bash(cargo clippy *)",
+      "Bash(cargo fmt *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr list *)",
+      "Bash(bktide *)",
+      "Bash(tmux *)",
+      "Bash(mise ls *)",
+      "Bash(mise ls-remote *)",
+      "Bash(find *)",
+      "Bash(wc *)",
+      "Bash(diff *)",
+      "Bash(which *)",
+      "Bash(whoami *)",
+      "Bash(pwd *)",
+      "Bash(env *)",
+      "Bash(sort *)",
+      "Bash(uniq *)",
+      "Bash(cut *)",
+      "Bash(sed *)",
+      "Bash(awk *)",
+      "Bash(xargs *)",
+      "Bash(realpath *)",
+      "Bash(dirname *)",
+      "Bash(basename *)",
+      "Bash(file *)",
+      "Bash(stat *)",
+      "Bash(tree *)",
+      "Bash(date *)",
+      "Bash(uname *)",
+      "Bash(du *)",
+      "Bash(tee *)",
+      "Bash(tr *)",
+      "Bash(ruby -e *)",
+      "Bash(bin/pks *)",
+      "Bash(bin/codeownership *)",
+      "Bash(bin/tapioca *)",
+      "Bash(lefthook *)",
+      "Bash(bin/rails *)",
+      "Bash(bundle exec *)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(chmod -R *)",
+      "Bash(chown *)",
+      "Bash(mkfs *)",
+      "Bash(dd *)",
+      "Bash(> /*)",
+      "Bash(curl * | bash*)",
+      "Bash(wget * | bash*)"
+    ],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(jj git push *)",
+      "Bash(git push *)",
+      "Bash(mv *)",
+      "Bash(cp -r *)",
+      "Bash(chmod *)",
+      "Bash(kill *)",
+      "Bash(pkill *)",
+      "Bash(brew *)",
+      "Bash(npm install *)",
+      "Bash(yarn add *)",
+      "Bash(bundle install *)",
+      "Bash(gem install *)"
+    ],
+    "defaultMode": "plan"
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/notify.sh 'Claude has finished'"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/notify.sh 'Claude needs permission'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/notify.sh 'Claude has a question for you'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y @owloops/claude-powerline@latest --style=powerline"
+  },
+  "enabledPlugins": {
+    "gusto-setup-wizard@gusto-claude-code": true,
+    "gusto-essentials@gusto-claude-code": true,
+    "gusto-dev@gusto-claude-code": true,
+    "gusto-frontend@gusto-claude-code": true,
+    "gusto-backend@gusto-claude-code": true,
+    "gusto-product@gusto-claude-code": true,
+    "superpowers@claude-plugins-official": true,
+    "eng-performance-reviews@gusto-claude-code": true,
+    "gdev-wish@gusto-claude-code": true
+  },
+  "extraKnownMarketplaces": {
+    "gusto-claude-code": {
+      "source": {
+        "source": "github",
+        "repo": "gusto/claude-code"
+      },
+      "autoUpdate": true
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "showClearContextOnPlanAccept": true
+}
