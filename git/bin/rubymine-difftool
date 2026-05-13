@@ -1,0 +1,26 @@
+#!/bin/bash
+# git difftool helper that survives the temp-file deletion race with RubyMine.
+#
+# Problem: git-difftool invokes a cmd, then deletes its temp files the moment
+# the cmd returns. JetBrains Toolbox launchers (e.g. rubymine1) `open -na` the
+# IDE and return immediately, so the IDE wakes up after the temp file is gone.
+#
+# Fix: copy LOCAL / REMOTE to a persistent dir, then launch RubyMine pointing
+# at the copies. Old copies get pruned on each invocation.
+
+set -euo pipefail
+
+PERSIST_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/git-difftool-rubymine"
+mkdir -p "$PERSIST_DIR"
+
+# Prune copies older than 1 day to avoid unbounded accumulation.
+find "$PERSIST_DIR" -mindepth 1 -mtime +1 -delete 2>/dev/null || true
+
+STAMP="$(date +%Y%m%d-%H%M%S-%N)"
+LOCAL_COPY="$PERSIST_DIR/${STAMP}-LOCAL-$(basename "$1")"
+REMOTE_COPY="$PERSIST_DIR/${STAMP}-REMOTE-$(basename "$2")"
+
+cp "$1" "$LOCAL_COPY"
+cp "$2" "$REMOTE_COPY"
+
+rubymine1 diff "$LOCAL_COPY" "$REMOTE_COPY"
