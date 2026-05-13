@@ -18,3 +18,6 @@
 ## User Preferences
 - Prefers plan mode by default
 - Wants notifications when Claude needs attention but NOT when the hosting terminal app is frontmost
+
+## Active Issues
+- [Claude desktop blocked by CrowdStrike](claude_desktop_crowdstrike.md) — CrowdStrike Falcon spikes CPU on launch and prevents Claude desktop from running. Don't suggest reinstall; needs IT allowlist.
