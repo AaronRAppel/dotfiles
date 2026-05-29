@@ -17,7 +17,7 @@ while [ "$pid" -ne 1 ] && [ -n "$pid" ]; do
     */Code)            HOST_APP="Code";      BUNDLE_ID="com.microsoft.VSCode"; break ;;
     */Warp.app/*)      HOST_APP="Warp";      BUNDLE_ID="dev.warp.Warp-Stable"; break ;;
     *RubyMine*)        HOST_APP="rubymine";  BUNDLE_ID="com.jetbrains.rubymine"; break ;;
-    */Claude.app/*)    HOST_APP="Claude";    BUNDLE_ID="com.anthropic.claudefordesktop"; break ;;
+    */Claude.app/*)    exit 0 ;;  # Claude Code desktop sends its own notifications
   esac
   pid=$(ps -p "$pid" -o ppid= 2>/dev/null | tr -d ' ')
 done
