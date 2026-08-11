@@ -127,7 +127,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat ~/workspace/dotfiles/claude/terse-contract.md 2>/dev/null || true"
+            "command": "cat ~/.claude/terse-contract.md 2>/dev/null || true"
           }
         ]
       }

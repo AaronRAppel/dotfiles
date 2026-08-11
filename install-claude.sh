@@ -10,7 +10,7 @@ USERNAME_ENCODED=$(whoami | tr '.' '-')
 MEMORY_DIR="$CLAUDE_HOME/projects/-Users-$USERNAME_ENCODED/memory"
 
 if [ "$1" = "--uninstall" ]; then
-  for f in "$CLAUDE_HOME/CLAUDE.md" "$CLAUDE_HOME/settings.json" "$CLAUDE_HOME/scripts/notify.sh"; do
+  for f in "$CLAUDE_HOME/CLAUDE.md" "$CLAUDE_HOME/settings.json" "$CLAUDE_HOME/terse-contract.md" "$CLAUDE_HOME/scripts/notify.sh"; do
     [ -L "$f" ] && rm "$f" && echo "Removed: $f"
   done
   find "$CLAUDE_HOME/commands" -type l -delete 2>/dev/null
@@ -36,6 +36,7 @@ link_file() {
 # Top-level files
 link_file "$DOTFILES/claude/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md"
 link_file "$DOTFILES/claude/settings.json" "$CLAUDE_HOME/settings.json"
+link_file "$DOTFILES/claude/terse-contract.md" "$CLAUDE_HOME/terse-contract.md"
 
 # Scripts
 mkdir -p "$CLAUDE_HOME/scripts"
