@@ -15,6 +15,7 @@ if [ "$1" = "--uninstall" ]; then
   done
   find "$CLAUDE_HOME/commands" -type l -delete 2>/dev/null
   find "$CLAUDE_HOME/skills" -type l -delete 2>/dev/null
+  find "$CLAUDE_HOME/output-styles" -type l -delete 2>/dev/null
   find "$MEMORY_DIR" -type l -delete 2>/dev/null
   echo "Removed symlinks"
   exit 0
@@ -45,6 +46,13 @@ mkdir -p "$CLAUDE_HOME/commands"
 for file in "$DOTFILES/claude/commands"/*; do
   [ -f "$file" ] || continue
   link_file "$file" "$CLAUDE_HOME/commands/$(basename "$file")"
+done
+
+# Output styles
+mkdir -p "$CLAUDE_HOME/output-styles"
+for file in "$DOTFILES/claude/output-styles"/*; do
+  [ -f "$file" ] || continue
+  link_file "$file" "$CLAUDE_HOME/output-styles/$(basename "$file")"
 done
 
 # Skills (symlink entire skill directories)
