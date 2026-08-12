@@ -97,6 +97,20 @@
           {
             "type": "command",
             "command": "~/.claude/scripts/notify.sh 'Claude has finished'"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/style-check.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/inject-contract.sh"
           }
         ]
       }
@@ -118,16 +132,6 @@
           {
             "type": "command",
             "command": "~/.claude/scripts/notify.sh 'Claude has a question for you'"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat ~/.claude/terse-contract.md 2>/dev/null || true"
           }
         ]
       }
