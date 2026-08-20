@@ -97,20 +97,6 @@
           {
             "type": "command",
             "command": "~/.claude/scripts/notify.sh 'Claude has finished'"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/scripts/style-check.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/scripts/inject-contract.sh"
           }
         ]
       }
@@ -164,7 +150,7 @@
       "autoUpdate": true
     }
   },
-  "outputStyle": "Direct",
+  "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
   "showClearContextOnPlanAccept": true,
