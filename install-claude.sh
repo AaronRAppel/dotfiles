@@ -24,7 +24,10 @@ fi
 
 link_file() {
   local src="$1" dst="$2"
-  if [ -L "$dst" ]; then
+  if [ ! -e "$src" ]; then
+    echo "WARNING: source missing, not linking: $src"
+    return
+  elif [ -L "$dst" ]; then
     echo "Skipped (already linked): $dst"
   elif [ -e "$dst" ]; then
     echo "WARNING: $dst exists and is not a symlink. Back it up or remove it first."
@@ -37,7 +40,6 @@ link_file() {
 # Top-level files
 link_file "$DOTFILES/claude/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md"
 link_file "$DOTFILES/claude/settings.json" "$CLAUDE_HOME/settings.json"
-link_file "$DOTFILES/claude/terse-contract.md" "$CLAUDE_HOME/terse-contract.md"
 
 # Scripts
 mkdir -p "$CLAUDE_HOME/scripts"
@@ -51,13 +53,6 @@ mkdir -p "$CLAUDE_HOME/commands"
 for file in "$DOTFILES/claude/commands"/*; do
   [ -f "$file" ] || continue
   link_file "$file" "$CLAUDE_HOME/commands/$(basename "$file")"
-done
-
-# Output styles
-mkdir -p "$CLAUDE_HOME/output-styles"
-for file in "$DOTFILES/claude/output-styles"/*; do
-  [ -f "$file" ] || continue
-  link_file "$file" "$CLAUDE_HOME/output-styles/$(basename "$file")"
 done
 
 # Skills (symlink entire skill directories)

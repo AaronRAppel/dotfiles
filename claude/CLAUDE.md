@@ -5,7 +5,7 @@
 ## Writing
 
 Style rules — answer first, compose don't dump, hedge once, structure must earn itself —
-live in the `Direct` output style, and as a per-turn checklist in `terse-contract.md`.
+come from the built-in `Concise` output style, set as `outputStyle` in `settings.json`.
 They apply to everything you write: chat, PR bodies, commit messages, code comments,
 plan files, review replies, Notion docs, Jira tickets, Slack messages.
 
