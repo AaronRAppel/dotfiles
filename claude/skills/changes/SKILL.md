@@ -1,11 +1,11 @@
 ---
-name: explain-changes
-description: Walk through the changes on a branch or PR file by file, explaining why each file is shaped the way it is — the design rationale and the load-bearing constraints, not just what changed. Use when the user asks to explain a branch or PR, walk me through these changes, why is this file like this, explain the design of this change, or invokes /explain-changes. Accepts a PR number, branch name, or nothing (current branch). Read-only. Distinct from list-changes (enumerates files, what-only), summarize-changes (stats and commit messages only), and review-changes/review-pr (find problems — this skill does not).
-argument-hint: "[PR number | branch] [--non-spec | --pack <name>]"
+name: changes
+description: Walk through the changes on a branch or PR file by file, explaining why each file is shaped the way it is — the design rationale and the load-bearing constraints, not just what changed. Use when the user asks to explain a branch or PR, walk me through these changes, why is this file like this, explain the design of this change, or invokes /changes. Opens with a grouped summary of every changed file, then goes file by file. Accepts a PR number, PR URL, branch name, or nothing (current branch). Read-only. Distinct from summarize-changes (stats and commit messages only) and review-changes/review-pr (find problems — this skill does not).
+argument-hint: "[PR number | PR URL | branch] [--non-spec | --pack <name>]"
 allowed-tools: Bash, Read, Grep, Glob, AskUserQuestion
 ---
 
-# Explain Changes
+# Changes
 
 Explain a change so a reviewer — or the author a week later — understands **why each file is shaped
 the way it is**. Not what changed; the diff already says that.
@@ -19,7 +19,9 @@ This skill does not find problems. If you notice a bug, note it in one line at t
 
 Stacked PRs are common. **Never assume `main`.**
 
-- **Argument is a number** → `gh pr view <n> --json number,title,body,baseRefName,headRefName,url,state`.
+- **Argument is a number, or a GitHub PR URL** → take the number out of the URL
+  (`.../pull/<n>` — trailing segments like `/files` or `/changes` are noise, drop them), then
+  `gh pr view <n> --json number,title,body,baseRefName,headRefName,url,state`.
   The base is `baseRefName` from the PR itself. Fetch both refs, then:
   `git merge-base origin/<baseRefName> origin/<headRefName>`.
   - **If the PR is merged or closed, that fails** — the head branch is usually deleted, so
@@ -115,7 +117,30 @@ This line carries the whole load of explaining execution order, because the file
 GitHub's path order rather than flow order. When a file sits far from its caller in path order, say
 where it fits — "third step of the flow above" — so the reader can place it.
 
-### Then one entry per file
+### Then the summary — every changed file, one line each
+
+Before the walkthrough, give the whole shape at a glance. This is the part a reader skims to decide
+where to look; the walkthrough below is what they read once they've decided.
+
+- **One header line of totals**, and only here: `18 files, all new, +5120/-0 — of which 4410 lines
+  are generated RBIs`. Call out generated volume separately when it dominates the diff, so nobody
+  reads 5k lines as 5k lines of judgment.
+- **Group by functional area, not by git status.** Cluster files that are read together — a model
+  with its concern, a mutation with its resolver. Short headings: "Domain Models", "GraphQL",
+  "Services & Repositories", "Events & Kafka", "Tests", "Config & Migrations", "Generated".
+- **Order groups by importance** — core domain first, then API layer, then infrastructure, then
+  tests, then generated last. Within a group, primary file first.
+- **One line per file**: markdown link, then `— [new/modified/deleted, +N/-M]`, then one sentence of
+  *what* changed. No why here — the why is the walkthrough's job.
+- **Collapse repetition.** Three near-identical factories or per-model RBIs get one line covering
+  all of them with the paths inline. Never emit twenty lines that say the same thing.
+- **Say what's missing** when the change obviously depends on something absent from it — a migration,
+  a caller, a flag flip. One line, at the end of the summary.
+
+The summary is grouped and ranked; the walkthrough below is in git order. They deliberately disagree,
+so a file's position differs between them — that's fine, and it's why every summary line is a link.
+
+### Then one entry per file — the walkthrough
 
 **A human reads this.** Each file gets a short prose description carrying the *why*, then bullets for
 the moving parts. Prose for judgment, bullets for inventory — don't force either into the other.
@@ -209,6 +234,8 @@ The grep is what makes it credible. Do it every time.
 - **Cite `file:line`** for anything a reviewer would want to check. Use markdown links relative to
   the repo root.
 - **Bullets over prose.** Short lines a human can scan. Tables only with real columns and >2 rows.
-- **No preamble. No diff stat.** Don't open with "This PR contains 13 files, 625 insertions".
+- **No preamble.** Don't open with "This PR contains…" or restate the request. Totals belong on
+  the summary's one header line and nowhere else — never as an opening paragraph, never repeated
+  in the walkthrough or the closing point.
 - Repo-agnostic by default. The Packwerk/pack details above are this repo's shape; on another repo,
   read whatever the local equivalent is (module boundaries, ownership files, dependency manifests).
